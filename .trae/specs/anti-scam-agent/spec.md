@@ -39,7 +39,7 @@
 - **NFR-5**: 系统稳定性高，能够处理并发请求
 
 ## Constraints
-- **Technical**: 需要接入大模型API，需要处理多模态输入
+- **Technical**: 需要接入大模型API（千问、豆包、智谱、minimax等），需要处理多模态输入
 - **Business**: 确保合规性，不提供投资建议
 - **Dependencies**: 依赖大模型服务，需要稳定的网络连接
 
@@ -47,6 +47,12 @@
 - 用户具备基本的网络操作能力
 - 大模型服务能够稳定提供API访问
 - 用户理解本系统仅提供风险识别，不替代专业顾问
+
+## Technical Specifications
+- **Supported File Formats**: PDF, Word, Excel, TXT
+- **Response Time**: Within 3 seconds, with "Thinking..." prompt
+- **Analysis Depth**: Utilize large model's deep thinking capabilities
+- **System Architecture**: Based on mature system architecture
 
 ## Acceptance Criteria
 

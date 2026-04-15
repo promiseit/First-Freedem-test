@@ -1,6 +1,6 @@
 # 防割韭菜Agent - 实施计划
 
-## [ ] 任务1: 前端页面设计与实现
+## [x] 任务1: 前端页面设计与实现
 - **Priority**: P0
 - **Depends On**: None
 - **Description**:
@@ -17,39 +17,43 @@
   - `human-judgment` TR-1.5: 页面美观简洁，字体统一，用户体验舒适
 - **Notes**: 使用现代前端框架，确保界面美观且响应迅速
 
-## [ ] 任务2: 后端API设计与实现
+## [x] 任务2: 后端API设计与实现
 - **Priority**: P0
 - **Depends On**: None
 - **Description**:
   - 设计RESTful API接口，处理前端请求
   - 实现文字、图片、文件的接收和处理逻辑
+  - 实现PDF、Word、Excel、TXT等文件格式的处理
   - 设计数据库结构，存储必要的会话信息
   - 实现安全的文件上传和处理机制
+  - 基于成熟系统架构设计后端系统
 - **Acceptance Criteria Addressed**: AC-1, AC-2, AC-3, AC-7
 - **Test Requirements**:
   - `programmatic` TR-2.1: API接口正常响应
   - `programmatic` TR-2.2: 文字处理功能正常
   - `programmatic` TR-2.3: 图片处理功能正常
-  - `programmatic` TR-2.4: 文件处理功能正常
+  - `programmatic` TR-2.4: 文件处理功能正常，支持PDF、Word、Excel、TXT格式
   - `programmatic` TR-2.5: 安全测试通过，无漏洞
-- **Notes**: 采用安全的API设计，防止注入攻击和文件上传漏洞
+- **Notes**: 采用安全的API设计，防止注入攻击和文件上传漏洞，基于成熟系统架构构建
 
-## [ ] 任务3: 大模型集成
+## [x] 任务3: 大模型集成
 - **Priority**: P0
 - **Depends On**: 任务2
 - **Description**:
-  - 选择并集成合适的大模型API
-  - 实现大模型的调用逻辑
+  - 集成千问、豆包、智谱、minimax等大模型API
+  - 实现大模型的调用逻辑，支持深度思考功能
   - 设计提示词工程，优化风险识别能力
   - 实现多模态输入的处理逻辑
+  - 实现3秒内响应机制，添加"思考中"提示
 - **Acceptance Criteria Addressed**: AC-4, AC-5
 - **Test Requirements**:
   - `programmatic` TR-3.1: 大模型API调用正常
-  - `human-judgment` TR-3.2: 风险识别准确性高
-  - `human-judgment` TR-3.3: 沟通风格平和专业
-- **Notes**: 选择性能和成本平衡的大模型，优化提示词以提高风险识别能力
+  - `programmatic` TR-3.2: 响应时间在3秒内
+  - `human-judgment` TR-3.3: 风险识别准确性高
+  - `human-judgment` TR-3.4: 沟通风格平和专业
+- **Notes**: 选择性能和成本平衡的大模型，优化提示词以提高风险识别能力，确保响应速度符合要求
 
-## [ ] 任务4: 安全开发与测试
+## [x] 任务4: 安全开发与测试
 - **Priority**: P1
 - **Depends On**: 任务2, 任务3
 - **Description**:
@@ -64,7 +68,7 @@
   - `programmatic` TR-4.3: 访问控制有效
 - **Notes**: 定期进行安全测试，确保系统安全性
 
-## [ ] 任务5: 系统集成与测试
+## [x] 任务5: 系统集成与测试
 - **Priority**: P1
 - **Depends On**: 任务1, 任务2, 任务3
 - **Description**:
@@ -80,7 +84,7 @@
   - `human-judgment` TR-5.4: 用户体验良好
 - **Notes**: 进行负载测试，确保系统能够处理并发请求
 
-## [ ] 任务6: 部署与监控
+## [x] 任务6: 部署与监控
 - **Priority**: P2
 - **Depends On**: 任务5
 - **Description**:
