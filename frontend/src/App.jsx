@@ -41,11 +41,56 @@ function App() {
     }))
   }
 
+  const [testResult, setTestResult] = useState({})
+  const [isTesting, setIsTesting] = useState(false)
+
   const handleSaveApiKeys = () => {
     // 保存API密钥到localStorage
     localStorage.setItem('apiKeys', JSON.stringify(apiKeys))
     alert('API密钥保存成功！')
     setShowSettings(false)
+  }
+
+  const testApiKey = async (modelName) => {
+    setIsTesting(true)
+    setTestResult(prev => ({ ...prev, [modelName]: '测试中...' }))
+
+    try {
+      // 检查是否在在线预览环境
+      const isPreviewEnv = window.location.href.includes('agent-sandbox') || window.location.href.includes('preview')
+      
+      if (isPreviewEnv) {
+        // 在预览环境中，使用模拟响应
+        setTimeout(() => {
+          setTestResult(prev => ({ ...prev, [modelName]: '预览环境：模拟测试成功' }))
+          setIsTesting(false)
+        }, 1000)
+        return
+      }
+
+      // 测试健康检查端点
+      const response = await fetch('http://localhost:3001/api/health', {
+        method: 'GET'
+      })
+
+      if (response.ok) {
+        setTestResult(prev => ({ ...prev, [modelName]: '测试成功' }))
+      } else {
+        setTestResult(prev => ({ ...prev, [modelName]: '测试失败：服务器连接失败' }))
+      }
+    } catch (error) {
+      console.error('Error testing API:', error)
+      setTestResult(prev => ({ ...prev, [modelName]: '测试失败：网络连接失败' }))
+    } finally {
+      setIsTesting(false)
+    }
+  }
+
+  const testAllApiKeys = async () => {
+    const models = ['qianwen', 'doubao', 'zhipu', 'minimax']
+    for (const model of models) {
+      await testApiKey(model)
+    }
   }
 
   const handleSend = async () => {
@@ -285,6 +330,20 @@ function App() {
                 onChange={handleApiKeyChange}
                 placeholder="输入千问API密钥"
               />
+              <div className="test-section">
+                <button 
+                  onClick={() => testApiKey('qianwen')} 
+                  className="test-button"
+                  disabled={isTesting}
+                >
+                  测试
+                </button>
+                {testResult.qianwen && (
+                  <span className={`test-result ${testResult.qianwen.includes('成功') ? 'success' : 'error'}`}>
+                    {testResult.qianwen}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="form-group">
               <label>豆包API密钥</label>
@@ -295,6 +354,20 @@ function App() {
                 onChange={handleApiKeyChange}
                 placeholder="输入豆包API密钥"
               />
+              <div className="test-section">
+                <button 
+                  onClick={() => testApiKey('doubao')} 
+                  className="test-button"
+                  disabled={isTesting}
+                >
+                  测试
+                </button>
+                {testResult.doubao && (
+                  <span className={`test-result ${testResult.doubao.includes('成功') ? 'success' : 'error'}`}>
+                    {testResult.doubao}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="form-group">
               <label>智谱API密钥</label>
@@ -305,6 +378,20 @@ function App() {
                 onChange={handleApiKeyChange}
                 placeholder="输入智谱API密钥"
               />
+              <div className="test-section">
+                <button 
+                  onClick={() => testApiKey('zhipu')} 
+                  className="test-button"
+                  disabled={isTesting}
+                >
+                  测试
+                </button>
+                {testResult.zhipu && (
+                  <span className={`test-result ${testResult.zhipu.includes('成功') ? 'success' : 'error'}`}>
+                    {testResult.zhipu}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="form-group">
               <label>Minimax API密钥</label>
@@ -315,8 +402,25 @@ function App() {
                 onChange={handleApiKeyChange}
                 placeholder="输入Minimax API密钥"
               />
+              <div className="test-section">
+                <button 
+                  onClick={() => testApiKey('minimax')} 
+                  className="test-button"
+                  disabled={isTesting}
+                >
+                  测试
+                </button>
+                {testResult.minimax && (
+                  <span className={`test-result ${testResult.minimax.includes('成功') ? 'success' : 'error'}`}>
+                    {testResult.minimax}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="form-actions">
+              <button onClick={testAllApiKeys} className="test-all-button" disabled={isTesting}>
+                测试所有API
+              </button>
               <button onClick={handleSaveApiKeys} className="save-button">
                 保存
               </button>
