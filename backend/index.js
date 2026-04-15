@@ -137,8 +137,8 @@ app.post('/api/message', async (req, res) => {
   console.log('Received apiKeys:', apiKeys);
   
   try {
-    // 创建模型管理器实例，使用前端发送的API密钥
-    const modelManager = new ModelManager(apiKeys);
+    // 创建模型管理器实例，使用前端发送的API密钥（如果提供）
+    const modelManager = new ModelManager(apiKeys || {});
     
     // 设置3秒超时
     const timeoutPromise = new Promise((_, reject) => {
@@ -176,7 +176,7 @@ app.post('/api/upload/image', upload.single('image'), async (req, res) => {
     const apiKeys = req.body.apiKeys ? JSON.parse(req.body.apiKeys) : {};
     console.log('Received apiKeys:', apiKeys);
     
-    // 创建模型管理器实例，使用前端发送的API密钥
+    // 创建模型管理器实例，使用前端发送的API密钥（如果提供）
     const modelManager = new ModelManager(apiKeys);
     
     // 使用Tesseract进行OCR
@@ -218,7 +218,7 @@ app.post('/api/upload/file', upload.single('file'), async (req, res) => {
     const apiKeys = req.body.apiKeys ? JSON.parse(req.body.apiKeys) : {};
     console.log('Received apiKeys:', apiKeys);
     
-    // 创建模型管理器实例，使用前端发送的API密钥
+    // 创建模型管理器实例，使用前端发送的API密钥（如果提供）
     const modelManager = new ModelManager(apiKeys);
     
     // 解析文件

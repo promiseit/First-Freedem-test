@@ -18,6 +18,7 @@ function App() {
     zhipu: '',
     minimax: ''
   })
+  const [useLocalApiKeys, setUseLocalApiKeys] = useState(false)
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -30,6 +31,11 @@ function App() {
     const savedApiKeys = localStorage.getItem('apiKeys')
     if (savedApiKeys) {
       setApiKeys(JSON.parse(savedApiKeys))
+    }
+    // 从localStorage加载useLocalApiKeys设置
+    const savedUseLocalApiKeys = localStorage.getItem('useLocalApiKeys')
+    if (savedUseLocalApiKeys) {
+      setUseLocalApiKeys(JSON.parse(savedUseLocalApiKeys))
     }
   }, [])
 
@@ -47,6 +53,8 @@ function App() {
   const handleSaveApiKeys = () => {
     // 保存API密钥到localStorage
     localStorage.setItem('apiKeys', JSON.stringify(apiKeys))
+    // 保存useLocalApiKeys设置到localStorage
+    localStorage.setItem('useLocalApiKeys', JSON.stringify(useLocalApiKeys))
     alert('API密钥保存成功！')
     setShowSettings(false)
   }
@@ -133,7 +141,7 @@ function App() {
         },
         body: JSON.stringify({ 
           content: inputValue,
-          apiKeys: apiKeys
+          apiKeys: useLocalApiKeys ? null : apiKeys
         })
       })
 
@@ -200,7 +208,9 @@ function App() {
 
         const formData = new FormData()
         formData.append('image', file)
-        formData.append('apiKeys', JSON.stringify(apiKeys))
+        if (!useLocalApiKeys) {
+          formData.append('apiKeys', JSON.stringify(apiKeys))
+        }
 
         const response = await fetch('http://localhost:3001/api/upload/image', {
           method: 'POST',
@@ -270,7 +280,9 @@ function App() {
 
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('apiKeys', JSON.stringify(apiKeys))
+        if (!useLocalApiKeys) {
+          formData.append('apiKeys', JSON.stringify(apiKeys))
+        }
 
         const response = await fetch('http://localhost:3001/api/upload/file', {
           method: 'POST',
@@ -322,6 +334,17 @@ function App() {
           <h2>API密钥设置</h2>
           <div className="settings-form">
             <div className="form-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={useLocalApiKeys}
+                  onChange={(e) => setUseLocalApiKeys(e.target.checked)}
+                />
+                使用本地API密钥（从后端配置文件读取）
+              </label>
+              <p className="form-note">如果勾选此项，将使用后端配置文件中设置的API密钥，忽略上述输入的密钥。</p>
+            </div>
+            <div className="form-group">
               <label>千问API密钥</label>
               <input
                 type="text"
@@ -329,12 +352,13 @@ function App() {
                 value={apiKeys.qianwen}
                 onChange={handleApiKeyChange}
                 placeholder="输入千问API密钥"
+                disabled={useLocalApiKeys}
               />
               <div className="test-section">
                 <button 
                   onClick={() => testApiKey('qianwen')} 
                   className="test-button"
-                  disabled={isTesting}
+                  disabled={isTesting || useLocalApiKeys}
                 >
                   测试
                 </button>
@@ -353,12 +377,13 @@ function App() {
                 value={apiKeys.doubao}
                 onChange={handleApiKeyChange}
                 placeholder="输入豆包API密钥"
+                disabled={useLocalApiKeys}
               />
               <div className="test-section">
                 <button 
                   onClick={() => testApiKey('doubao')} 
                   className="test-button"
-                  disabled={isTesting}
+                  disabled={isTesting || useLocalApiKeys}
                 >
                   测试
                 </button>
@@ -377,12 +402,13 @@ function App() {
                 value={apiKeys.zhipu}
                 onChange={handleApiKeyChange}
                 placeholder="输入智谱API密钥"
+                disabled={useLocalApiKeys}
               />
               <div className="test-section">
                 <button 
                   onClick={() => testApiKey('zhipu')} 
                   className="test-button"
-                  disabled={isTesting}
+                  disabled={isTesting || useLocalApiKeys}
                 >
                   测试
                 </button>
@@ -401,12 +427,13 @@ function App() {
                 value={apiKeys.minimax}
                 onChange={handleApiKeyChange}
                 placeholder="输入Minimax API密钥"
+                disabled={useLocalApiKeys}
               />
               <div className="test-section">
                 <button 
                   onClick={() => testApiKey('minimax')} 
                   className="test-button"
-                  disabled={isTesting}
+                  disabled={isTesting || useLocalApiKeys}
                 >
                   测试
                 </button>
@@ -418,7 +445,7 @@ function App() {
               </div>
             </div>
             <div className="form-actions">
-              <button onClick={testAllApiKeys} className="test-all-button" disabled={isTesting}>
+              <button onClick={testAllApiKeys} className="test-all-button" disabled={isTesting || useLocalApiKeys}>
                 测试所有API
               </button>
               <button onClick={handleSaveApiKeys} className="save-button">
