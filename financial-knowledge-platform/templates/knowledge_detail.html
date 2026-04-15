@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ knowledge.title }} - 金融知识平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>金融知识平台</h1>
+            </div>
+            <div class="search-box">
+                <form action="{{ url_for('search') }}" method="get">
+                    <input type="text" name="q" placeholder="搜索金融知识..." required>
+                    <button type="submit">搜索</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="{{ url_for('index') }}">首页</a></li>
+                <li><a href="{{ url_for('category', category_id=knowledge.category_id) }}">{{ knowledge.category_name }}</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section class="knowledge-detail">
+            <div class="difficulty {{ knowledge.difficulty_level }}">{{ knowledge.difficulty_level | capitalize }}</div>
+            <h2>{{ knowledge.title }}</h2>
+            <div class="meta">
+                <span class="category">{{ knowledge.category_name }}</span>
+                <span class="read-count">阅读 {{ knowledge.read_count }}</span>
+                <span class="like-count">点赞 {{ knowledge.like_count }}</span>
+                <span class="created-at">{{ knowledge.created_at.strftime('%Y-%m-%d') }}</span>
+            </div>
+            
+            {% if tags %}
+            <div class="tags">
+                {% for tag in tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="content">
+                {{ knowledge.content | safe }}
+            </div>
+        </section>
+        
+        <section class="related-knowledge">
+            <h3>相关知识推荐</h3>
+            {% if related_knowledge %}
+            <div class="knowledge-grid">
+                {% for item in related_knowledge %}
+                <div class="knowledge-card">
+                    <div class="difficulty {{ item.difficulty_level }}">{{ item.difficulty_level | capitalize }}</div>
+                    <h4><a href="{{ url_for('knowledge_detail', knowledge_id=item.id) }}">{{ item.title }}</a></h4>
+                    <p class="summary">{{ item.summary }}</p>
+                    <div class="meta">
+                        <span class="category">{{ item.category_name }}</span>
+                        <span class="read-count">阅读 {{ item.read_count }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="no-results">暂无相关知识推荐</p>
+            {% endif %}
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 金融知识平台. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

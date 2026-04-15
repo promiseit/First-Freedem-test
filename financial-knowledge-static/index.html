@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金融知识平台</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>金融知识平台</h1>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="搜索金融知识...">
+                <button id="search-button">搜索</button>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul id="category-list">
+                <li><a href="#" data-category="all">首页</a></li>
+                <!-- 分类将通过JavaScript动态生成 -->
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section class="hero">
+            <h2>欢迎来到金融知识平台</h2>
+            <p>获取专业、易懂的金融知识，提升财务管理能力</p>
+        </section>
+        
+        <section class="knowledge-section">
+            <h3 id="section-title">热门知识</h3>
+            <div id="knowledge-grid" class="knowledge-grid">
+                <!-- 知识卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+        
+        <section id="knowledge-detail" class="knowledge-detail">
+            <!-- 知识详情将通过JavaScript动态生成 -->
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 金融知识平台. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

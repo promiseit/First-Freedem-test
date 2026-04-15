@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金融知识平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>金融知识平台</h1>
+            </div>
+            <div class="search-box">
+                <form action="{{ url_for('search') }}" method="get">
+                    <input type="text" name="q" placeholder="搜索金融知识..." required>
+                    <button type="submit">搜索</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="{{ url_for('index') }}">首页</a></li>
+                {% for category in categories %}
+                <li><a href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section class="hero">
+            <h2>欢迎来到金融知识平台</h2>
+            <p>获取专业、易懂的金融知识，提升财务管理能力</p>
+        </section>
+        
+        <section class="popular-knowledge">
+            <h3>热门知识</h3>
+            <div class="knowledge-grid">
+                {% for knowledge in popular_knowledge %}
+                <div class="knowledge-card">
+                    <div class="difficulty {{ knowledge.difficulty_level }}">{{ knowledge.difficulty_level | capitalize }}</div>
+                    <h4><a href="{{ url_for('knowledge_detail', knowledge_id=knowledge.id) }}">{{ knowledge.title }}</a></h4>
+                    <p class="summary">{{ knowledge.summary }}</p>
+                    <div class="meta">
+                        <span class="category">{{ knowledge.category_name }}</span>
+                        <span class="read-count">阅读 {{ knowledge.read_count }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section class="latest-knowledge">
+            <h3>最新知识</h3>
+            <div class="knowledge-grid">
+                {% for knowledge in latest_knowledge %}
+                <div class="knowledge-card">
+                    <div class="difficulty {{ knowledge.difficulty_level }}">{{ knowledge.difficulty_level | capitalize }}</div>
+                    <h4><a href="{{ url_for('knowledge_detail', knowledge_id=knowledge.id) }}">{{ knowledge.title }}</a></h4>
+                    <p class="summary">{{ knowledge.summary }}</p>
+                    <div class="meta">
+                        <span class="category">{{ knowledge.category_name }}</span>
+                        <span class="read-count">阅读 {{ knowledge.read_count }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 金融知识平台. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
