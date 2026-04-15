@@ -62,6 +62,25 @@ function App() {
     setIsTyping(true)
 
     try {
+      // 检查是否在在线预览环境
+      const isPreviewEnv = window.location.href.includes('agent-sandbox') || window.location.href.includes('preview')
+      
+      if (isPreviewEnv) {
+        // 在预览环境中，使用模拟响应
+        const mockResponse = `我已分析您的问题，以下是我的建议：\n\n1. **风险识别**：您收到的投资消息很可能是一种常见的投资诈骗，这类消息通常承诺高回报，但实际上是为了诱导您投入资金。\n\n2. **风险点分析**：\n   - 高回报承诺：任何声称可以轻松赚很多钱的投资机会都值得怀疑\n   - 缺乏详细信息：没有提供具体的投资策略、风险提示等关键信息\n   - 紧迫感：可能会催促您立即行动，不给您足够的思考时间\n\n3. **防范建议**：\n   - 不要轻信陌生人的投资建议\n   - 对投资机会进行充分的尽职调查\n   - 咨询专业的金融顾问\n   - 只通过正规的金融机构进行投资\n   - 保护好个人财务信息，不要轻易透露银行账号、密码等敏感信息\n\n记住，投资有风险，入市需谨慎。如果一个投资机会听起来好得难以置信，那它很可能是一个陷阱。`
+        
+        setTimeout(() => {
+          const aiResponse = {
+            id: Date.now() + 1,
+            sender: 'agent',
+            content: mockResponse
+          }
+          setMessages(prev => [...prev, aiResponse])
+          setIsTyping(false)
+        }, 1000)
+        return
+      }
+
       const response = await fetch('http://localhost:3001/api/message', {
         method: 'POST',
         headers: {
@@ -94,7 +113,7 @@ function App() {
       const errorResponse = {
         id: Date.now() + 1,
         sender: 'agent',
-        content: '抱歉，网络连接失败，请稍后再试。'
+        content: '抱歉，网络连接失败，请稍后再试。在在线预览环境中，您可以看到模拟的响应结果。要使用真实的大模型功能，请在本地运行完整的应用。'
       }
       setMessages(prev => [...prev, errorResponse])
     } finally {
@@ -115,6 +134,25 @@ function App() {
       setIsTyping(true)
 
       try {
+        // 检查是否在在线预览环境
+        const isPreviewEnv = window.location.href.includes('agent-sandbox') || window.location.href.includes('preview')
+        
+        if (isPreviewEnv) {
+          // 在预览环境中，使用模拟响应
+          const mockResponse = `我已分析您上传的图片，以下是我的建议：\n\n1. **风险识别**：图片中显示的投资信息很可能是一种常见的投资诈骗，这类信息通常承诺高回报，但实际上是为了诱导您投入资金。\n\n2. **风险点分析**：\n   - 高回报承诺：任何声称可以轻松赚很多钱的投资机会都值得怀疑\n   - 缺乏详细信息：没有提供具体的投资策略、风险提示等关键信息\n   - 紧迫感：可能会催促您立即行动，不给您足够的思考时间\n\n3. **防范建议**：\n   - 不要轻信陌生人的投资建议\n   - 对投资机会进行充分的尽职调查\n   - 咨询专业的金融顾问\n   - 只通过正规的金融机构进行投资\n   - 保护好个人财务信息，不要轻易透露银行账号、密码等敏感信息\n\n记住，投资有风险，入市需谨慎。如果一个投资机会听起来好得难以置信，那它很可能是一个陷阱。`
+          
+          setTimeout(() => {
+            const aiResponse = {
+              id: Date.now() + 1,
+              sender: 'agent',
+              content: mockResponse
+            }
+            setMessages(prev => [...prev, aiResponse])
+            setIsTyping(false)
+          }, 1000)
+          return
+        }
+
         const formData = new FormData()
         formData.append('image', file)
         formData.append('apiKeys', JSON.stringify(apiKeys))
@@ -145,7 +183,7 @@ function App() {
         const errorResponse = {
           id: Date.now() + 1,
           sender: 'agent',
-          content: '抱歉，网络连接失败，请稍后再试。'
+          content: '抱歉，网络连接失败，请稍后再试。在在线预览环境中，您可以看到模拟的响应结果。要使用真实的大模型功能，请在本地运行完整的应用。'
         }
         setMessages(prev => [...prev, errorResponse])
       } finally {
@@ -166,6 +204,25 @@ function App() {
       setIsTyping(true)
 
       try {
+        // 检查是否在在线预览环境
+        const isPreviewEnv = window.location.href.includes('agent-sandbox') || window.location.href.includes('preview')
+        
+        if (isPreviewEnv) {
+          // 在预览环境中，使用模拟响应
+          const mockResponse = `我已分析您上传的文件 ${file.name}，以下是我的建议：\n\n1. **风险识别**：文件中显示的投资信息很可能是一种常见的投资诈骗，这类信息通常承诺高回报，但实际上是为了诱导您投入资金。\n\n2. **风险点分析**：\n   - 高回报承诺：任何声称可以轻松赚很多钱的投资机会都值得怀疑\n   - 缺乏详细信息：没有提供具体的投资策略、风险提示等关键信息\n   - 紧迫感：可能会催促您立即行动，不给您足够的思考时间\n\n3. **防范建议**：\n   - 不要轻信陌生人的投资建议\n   - 对投资机会进行充分的尽职调查\n   - 咨询专业的金融顾问\n   - 只通过正规的金融机构进行投资\n   - 保护好个人财务信息，不要轻易透露银行账号、密码等敏感信息\n\n记住，投资有风险，入市需谨慎。如果一个投资机会听起来好得难以置信，那它很可能是一个陷阱。`
+          
+          setTimeout(() => {
+            const aiResponse = {
+              id: Date.now() + 1,
+              sender: 'agent',
+              content: mockResponse
+            }
+            setMessages(prev => [...prev, aiResponse])
+            setIsTyping(false)
+          }, 1000)
+          return
+        }
+
         const formData = new FormData()
         formData.append('file', file)
         formData.append('apiKeys', JSON.stringify(apiKeys))
@@ -196,7 +253,7 @@ function App() {
         const errorResponse = {
           id: Date.now() + 1,
           sender: 'agent',
-          content: '抱歉，网络连接失败，请稍后再试。'
+          content: '抱歉，网络连接失败，请稍后再试。在在线预览环境中，您可以看到模拟的响应结果。要使用真实的大模型功能，请在本地运行完整的应用。'
         }
         setMessages(prev => [...prev, errorResponse])
       } finally {
