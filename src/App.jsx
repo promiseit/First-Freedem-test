@@ -13,6 +13,7 @@ const Remittance = lazy(() => import('./pages/Remittance'))
 const ConsumptionPlan = lazy(() => import('./pages/ConsumptionPlan'))
 const FinancialAnalysis = lazy(() => import('./pages/FinancialAnalysis'))
 const RiskAssessment = lazy(() => import('./pages/RiskAssessment'))
+const ChatAgent = lazy(() => import('./pages/ChatAgent'))
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <div className="App">
           <header className="header">
             <nav className="nav">
+              <Link to="/chat">防割韭菜Agent</Link>
               <Link to="/">首页</Link>
               <Link to="/about">关于</Link>
               <Link to="/investment-risk">投资风险分析</Link>
@@ -40,6 +42,7 @@ function App() {
                 <Route element={<PrivateRoute />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="/chat" element={<ChatAgent />} />
                   <Route path="/investment-risk" element={<InvestmentRiskAnalysis />} />
                   <Route path="/remittance" element={<Remittance />} />
                   <Route path="/consumption-plan" element={<ConsumptionPlan />} />
