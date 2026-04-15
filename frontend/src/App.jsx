@@ -77,7 +77,7 @@ function App() {
       }
 
       // 测试健康检查端点
-      const response = await fetch('http://localhost:3001/api/health', {
+      const response = await fetch('http://localhost:3333/api/health', {
         method: 'GET'
       })
 
@@ -134,7 +134,7 @@ function App() {
         return
       }
 
-      const response = await fetch('http://localhost:3001/api/message', {
+      const response = await fetch('http://localhost:3333/api/message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -212,7 +212,7 @@ function App() {
           formData.append('apiKeys', JSON.stringify(apiKeys))
         }
 
-        const response = await fetch('http://localhost:3001/api/upload/image', {
+        const response = await fetch('http://localhost:3333/api/upload/image', {
           method: 'POST',
           body: formData
         })
@@ -284,7 +284,7 @@ function App() {
           formData.append('apiKeys', JSON.stringify(apiKeys))
         }
 
-        const response = await fetch('http://localhost:3001/api/upload/file', {
+        const response = await fetch('http://localhost:3333/api/upload/file', {
           method: 'POST',
           body: formData
         })

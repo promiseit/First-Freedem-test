@@ -25,7 +25,7 @@ const modelConfigs = {
 
 // 服务器配置
 const serverConfig = {
-  port: process.env.PORT || 3001,
+  port: process.env.PORT || 3333,
   nodeEnv: process.env.NODE_ENV || 'development'
 };
 
