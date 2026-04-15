@@ -1,0 +1,1 @@
+import{j as t}from"./index-D0LTA5AX.js";import"./vendor-CMrSgS35.js";function i(){return t.jsxs("div",{children:[t.jsx("h1",{children:"关于我们"}),t.jsx("p",{children:"这是一个示例React项目，用于演示基础的前端开发流程"}),t.jsx("p",{children:"使用了React、React Router和Vite构建工具"})]})}export{i as default};

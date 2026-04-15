@@ -1,0 +1,1 @@
+import{j as e}from"./index-D0LTA5AX.js";import"./vendor-CMrSgS35.js";function t(){return e.jsxs("div",{children:[e.jsx("h1",{children:"欢迎来到首页"}),e.jsx("p",{children:"这是一个使用React和Vite搭建的项目"}),e.jsx("p",{children:"包含基础的页面布局和导航功能"})]})}export{t as default};

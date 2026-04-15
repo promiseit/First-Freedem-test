@@ -39,6 +39,11 @@ const ChatAgent = () => {
     setIsLoading(true);
 
     try {
+      // 检查llmService是否可用
+      if (!llmService || !llmService.chat) {
+        throw new Error('服务初始化失败');
+      }
+      
       // 调用大模型API
       const response = await llmService.chat([...messages, userMessage], {
         model,
@@ -56,7 +61,7 @@ const ChatAgent = () => {
       console.error('Error sending message:', error);
       const errorMessage = {
         role: 'assistant',
-        content: '抱歉，我遇到了一些问题，请稍后再试。'
+        content: '抱歉，我遇到了一些问题，请稍后再试。\n\n错误信息：' + (error.message || '未知错误')
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {

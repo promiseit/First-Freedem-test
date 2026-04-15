@@ -74,17 +74,23 @@ class LLMService {
 
   // 初始化API客户端
   initializeClients() {
-    Object.keys(MODEL_CONFIGS).forEach(model => {
-      const config = MODEL_CONFIGS[model];
-      this.clients[model] = axios.create({
-        baseURL: config.baseURL,
-        timeout: config.timeout,
-        headers: {
-          'Content-Type': 'application/json',
-          ...(config.apiKey && { 'Authorization': `Bearer ${config.apiKey}` })
-        }
+    try {
+      Object.keys(MODEL_CONFIGS).forEach(model => {
+        const config = MODEL_CONFIGS[model];
+        this.clients[model] = axios.create({
+          baseURL: config.baseURL,
+          timeout: config.timeout,
+          headers: {
+            'Content-Type': 'application/json',
+            ...(config.apiKey && { 'Authorization': `Bearer ${config.apiKey}` })
+          }
+        });
       });
-    });
+    } catch (error) {
+      console.error('Failed to initialize LLM clients:', error);
+      // 初始化失败时创建空对象，避免应用崩溃
+      this.clients = {};
+    }
   }
 
   // 切换模型
