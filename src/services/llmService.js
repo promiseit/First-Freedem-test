@@ -140,7 +140,7 @@ class LLMService {
 
       return await withRetry(requestFn, config.maxRetries);
     } catch (error) {
-      this.handleError(error, model);
+      throw this.handleError(error, model);
     }
   }
 
@@ -243,20 +243,20 @@ class LLMService {
           code = data.error?.code || code;
       }
       
-      throw new LLMError(message, code, {
+      return new LLMError(message, code, {
         model,
         status,
         response: data
       });
     } else if (error.request) {
       // 请求已发送但没有收到响应
-      throw new LLMError('无法连接到API服务', 'NETWORK_ERROR', {
+      return new LLMError('无法连接到API服务', 'NETWORK_ERROR', {
         model,
         message: error.message
       });
     } else {
       // 请求配置出错
-      throw new LLMError('请求配置错误', 'REQUEST_ERROR', {
+      return new LLMError('请求配置错误', 'REQUEST_ERROR', {
         model,
         message: error.message
       });
