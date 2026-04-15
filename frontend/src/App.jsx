@@ -11,6 +11,13 @@ function App() {
   ])
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [apiKeys, setApiKeys] = useState({
+    qianwen: '',
+    doubao: '',
+    zhipu: '',
+    minimax: ''
+  })
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -19,7 +26,27 @@ function App() {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+    // 从localStorage加载API密钥
+    const savedApiKeys = localStorage.getItem('apiKeys')
+    if (savedApiKeys) {
+      setApiKeys(JSON.parse(savedApiKeys))
+    }
+  }, [])
+
+  const handleApiKeyChange = (e) => {
+    const { name, value } = e.target
+    setApiKeys(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSaveApiKeys = () => {
+    // 保存API密钥到localStorage
+    localStorage.setItem('apiKeys', JSON.stringify(apiKeys))
+    alert('API密钥保存成功！')
+    setShowSettings(false)
+  }
 
   const handleSend = async () => {
     if (inputValue.trim() === '') return
@@ -40,7 +67,10 @@ function App() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ content: inputValue })
+        body: JSON.stringify({ 
+          content: inputValue,
+          apiKeys: apiKeys
+        })
       })
 
       const data = await response.json()
@@ -87,6 +117,7 @@ function App() {
       try {
         const formData = new FormData()
         formData.append('image', file)
+        formData.append('apiKeys', JSON.stringify(apiKeys))
 
         const response = await fetch('http://localhost:3001/api/upload/image', {
           method: 'POST',
@@ -137,6 +168,7 @@ function App() {
       try {
         const formData = new FormData()
         formData.append('file', file)
+        formData.append('apiKeys', JSON.stringify(apiKeys))
 
         const response = await fetch('http://localhost:3001/api/upload/file', {
           method: 'POST',
@@ -178,7 +210,66 @@ function App() {
       <header className="app-header">
         <h1>防割韭菜Agent</h1>
         <p>勇于谏言的大臣，防止您落入陷阱</p>
+        <button onClick={() => setShowSettings(!showSettings)} className="settings-button">
+          ⚙️ 设置
+        </button>
       </header>
+      
+      {showSettings && (
+        <div className="settings-container">
+          <h2>API密钥设置</h2>
+          <div className="settings-form">
+            <div className="form-group">
+              <label>千问API密钥</label>
+              <input
+                type="text"
+                name="qianwen"
+                value={apiKeys.qianwen}
+                onChange={handleApiKeyChange}
+                placeholder="输入千问API密钥"
+              />
+            </div>
+            <div className="form-group">
+              <label>豆包API密钥</label>
+              <input
+                type="text"
+                name="doubao"
+                value={apiKeys.doubao}
+                onChange={handleApiKeyChange}
+                placeholder="输入豆包API密钥"
+              />
+            </div>
+            <div className="form-group">
+              <label>智谱API密钥</label>
+              <input
+                type="text"
+                name="zhipu"
+                value={apiKeys.zhipu}
+                onChange={handleApiKeyChange}
+                placeholder="输入智谱API密钥"
+              />
+            </div>
+            <div className="form-group">
+              <label>Minimax API密钥</label>
+              <input
+                type="text"
+                name="minimax"
+                value={apiKeys.minimax}
+                onChange={handleApiKeyChange}
+                placeholder="输入Minimax API密钥"
+              />
+            </div>
+            <div className="form-actions">
+              <button onClick={handleSaveApiKeys} className="save-button">
+                保存
+              </button>
+              <button onClick={() => setShowSettings(false)} className="cancel-button">
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <main className="chat-container">
         <div className="messages">

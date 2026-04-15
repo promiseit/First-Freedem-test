@@ -7,7 +7,7 @@ const Tesseract = require('tesseract.js');
 const pdf = require('pdf-parse');
 const mammoth = require('mammoth');
 const XLSX = require('xlsx');
-const modelManager = require('./models/modelManager');
+const ModelManager = require('./models/modelManager');
 const { serverConfig } = require('./config');
 
 // 创建上传目录
@@ -132,10 +132,14 @@ app.use('/uploads', express.static(uploadDir, {
 
 // 路由
 app.post('/api/message', async (req, res) => {
-  const { content } = req.body;
+  const { content, apiKeys } = req.body;
   console.log('Received message:', content);
+  console.log('Received apiKeys:', apiKeys);
   
   try {
+    // 创建模型管理器实例，使用前端发送的API密钥
+    const modelManager = new ModelManager(apiKeys);
+    
     // 设置3秒超时
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('Request timeout')), 3000);
@@ -168,6 +172,13 @@ app.post('/api/upload/image', upload.single('image'), async (req, res) => {
   console.log('Received image:', req.file.filename);
   
   try {
+    // 获取API密钥
+    const apiKeys = req.body.apiKeys ? JSON.parse(req.body.apiKeys) : {};
+    console.log('Received apiKeys:', apiKeys);
+    
+    // 创建模型管理器实例，使用前端发送的API密钥
+    const modelManager = new ModelManager(apiKeys);
+    
     // 使用Tesseract进行OCR
     const { data: { text } } = await Tesseract.recognize(
       req.file.path,
@@ -203,6 +214,13 @@ app.post('/api/upload/file', upload.single('file'), async (req, res) => {
   console.log('Received file:', req.file.filename);
   
   try {
+    // 获取API密钥
+    const apiKeys = req.body.apiKeys ? JSON.parse(req.body.apiKeys) : {};
+    console.log('Received apiKeys:', apiKeys);
+    
+    // 创建模型管理器实例，使用前端发送的API密钥
+    const modelManager = new ModelManager(apiKeys);
+    
     // 解析文件
     const fileContent = await parseFile(req.file.path, req.file.originalname);
     console.log('Extracted content from file:', fileContent.substring(0, 500) + '...');
