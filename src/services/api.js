@@ -9,6 +9,14 @@ let users = [
     phone: '13800138000',
     securityQuestion: '你最喜欢的颜色是什么？',
     securityAnswer: '蓝色'
+  },
+  {
+    id: 2,
+    username: 'admin',
+    password: 'admin123',
+    phone: '13900139000',
+    securityQuestion: '管理员安全问题？',
+    securityAnswer: 'admin'
   }
 ];
 
