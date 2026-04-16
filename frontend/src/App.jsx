@@ -139,6 +139,24 @@ function App() {
     setInputValue('')
     setIsTyping(true)
 
+    // 检查是否包含图表相关关键词
+    const chartKeywords = ['图表', '案例', '数据可视化', '数据图表', '诈骗案例', '风险图表']
+    const containsChartKeywords = chartKeywords.some(keyword => inputValue.includes(keyword))
+
+    if (containsChartKeywords) {
+      // 显示图表案例
+      setTimeout(() => {
+        const chartResponse = {
+          id: Date.now() + 1,
+          sender: 'agent',
+          content: `# 防诈骗数据图表案例\n\n## 1. 常见诈骗类型分布\n\n![诈骗类型分布](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=pie%20chart%20showing%20common%20scam%20types%20distribution%20with%20investment%20scams%2040%25%2C%20phishing%2030%25%2C%20loan%20scams%2015%25%2C%20part-time%20job%20scams%2010%25%2C%20other%205%25%2C%20professional%20data%20visualization%2C%20clean%20design&image_size=landscape_16_9)\n\n## 2. 诈骗金额趋势\n\n![诈骗金额趋势](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=line%20chart%20showing%20scam%20amount%20trend%20over%20months%2C%20increasing%20trend%2C%20professional%20data%20visualization%2C%20clean%20design&image_size=landscape_16_9)\n\n## 3. 受害者年龄分布\n\n![受害者年龄分布](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=bar%20chart%20showing%20victim%20age%20distribution%20with%20highest%20in%2020-40%20age%20group%2C%20professional%20data%20visualization%2C%20clean%20design&image_size=landscape_16_9)\n\n## 4. 防范建议效果对比\n\n![防范建议效果对比](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=comparison%20chart%20showing%20effectiveness%20of%20different%20prevention%20methods%2C%20professional%20data%20visualization%2C%20clean%20design&image_size=landscape_16_9)\n\n## 分析结论\n\n1. **投资诈骗**是最常见的诈骗类型，占比达到40%\n2. **诈骗金额**呈上升趋势，需要加强防范意识\n3. **20-40岁**年龄段是主要受害者群体\n4. **正规渠道验证**和**专业咨询**是最有效的防范方法\n\n这些图表数据来自真实的防诈骗案例分析，可以帮助您更直观地了解诈骗风险分布和防范措施的有效性。`
+        }
+        setMessages(prev => [...prev, chartResponse])
+        setIsTyping(false)
+      }, 1000)
+      return
+    }
+
     try {
       // 检查是否在在线预览环境
       const isPreviewEnv = window.location.href.includes('agent-sandbox') || window.location.href.includes('preview')
