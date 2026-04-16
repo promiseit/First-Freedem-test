@@ -49,7 +49,7 @@ class ModelManager {
           return response.data.choices[0].message.content;
         } catch (error) {
           console.error('Qianwen API error:', error);
-          return '抱歉，我暂时无法处理您的请求，请稍后再试。';
+          throw error;
         }
       }
     };
@@ -92,7 +92,7 @@ class ModelManager {
           return response.data.choices[0].message.content;
         } catch (error) {
           console.error('Doubao API error:', error);
-          return '抱歉，我暂时无法处理您的请求，请稍后再试。';
+          throw error;
         }
       }
     };
@@ -135,7 +135,7 @@ class ModelManager {
           return response.data.choices[0].message.content;
         } catch (error) {
           console.error('Zhipu API error:', error);
-          return '抱歉，我暂时无法处理您的请求，请稍后再试。';
+          throw error;
         }
       }
     };
@@ -178,7 +178,7 @@ class ModelManager {
           return response.data.choices[0].text;
         } catch (error) {
           console.error('Minimax API error:', error);
-          return '抱歉，我暂时无法处理您的请求，请稍后再试。';
+          throw error;
         }
       }
     };
