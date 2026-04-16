@@ -76,13 +76,32 @@ function App() {
         return
       }
 
-      // 测试健康检查端点
-      const response = await fetch('http://localhost:3333/api/health', {
-        method: 'GET'
+      // 检查API密钥是否为空
+      if (!apiKeys[modelName]) {
+        setTestResult(prev => ({ ...prev, [modelName]: '测试失败：API密钥为空' }))
+        setIsTesting(false)
+        return
+      }
+
+      // 测试API密钥的有效性
+      const response = await fetch('http://localhost:3333/api/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          content: '测试消息',
+          apiKeys: { [modelName]: apiKeys[modelName] }
+        })
       })
 
       if (response.ok) {
-        setTestResult(prev => ({ ...prev, [modelName]: '测试成功' }))
+        const data = await response.json()
+        if (data.message && !data.message.includes('暂时无法处理您的请求')) {
+          setTestResult(prev => ({ ...prev, [modelName]: '测试成功' }))
+        } else {
+          setTestResult(prev => ({ ...prev, [modelName]: '测试失败：API密钥无效' }))
+        }
       } else {
         setTestResult(prev => ({ ...prev, [modelName]: '测试失败：服务器连接失败' }))
       }
