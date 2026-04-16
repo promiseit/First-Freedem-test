@@ -203,8 +203,50 @@ class ModelManager {
       return await this.generateResponse(deepPrompt, 'qianwen', { temperature: 0.3 });
     } catch (error) {
       console.error('Model API error, using mock response:', error);
+      // 根据用户输入生成不同的模拟响应
+      let riskType = '投资诈骗';
+      let specificRisks = [];
+      
+      // 根据输入内容分析风险类型
+      if (prompt.includes('兼职') || prompt.includes('刷单') || prompt.includes('返利')) {
+        riskType = '兼职刷单诈骗';
+        specificRisks = [
+          '要求先支付押金或保证金',
+          '承诺高额返利但无法提现',
+          '任务难度逐渐增加，需要投入更多资金'
+        ];
+      } else if (prompt.includes('贷款') || prompt.includes('借钱') || prompt.includes('征信')) {
+        riskType = '贷款诈骗';
+        specificRisks = [
+          '要求先支付手续费或保证金',
+          '声称可以消除征信污点',
+          '提供的贷款条件过于宽松'
+        ];
+      } else if (prompt.includes('中奖') || prompt.includes('领奖') || prompt.includes('礼品')) {
+        riskType = '中奖诈骗';
+        specificRisks = [
+          '要求先支付税费或手续费',
+          '声称奖品价值很高但需要支付运费',
+          '要求提供个人信息或银行账号'
+        ];
+      } else if (prompt.includes('股票') || prompt.includes('基金') || prompt.includes('投资')) {
+        riskType = '投资诈骗';
+        specificRisks = [
+          '高回报承诺：任何声称可以轻松赚很多钱的投资机会都值得怀疑',
+          '缺乏详细信息：没有提供具体的投资策略、风险提示等关键信息',
+          '紧迫感：可能会催促您立即行动，不给您足够的思考时间'
+        ];
+      } else {
+        riskType = '可疑活动';
+        specificRisks = [
+          '要求提供个人敏感信息',
+          '要求进行转账或支付',
+          '承诺不切实际的回报'
+        ];
+      }
+      
       // 提供模拟响应，确保前端能够正常工作
-      return `我已分析您的问题，以下是我的建议：\n\n1. **风险识别**：您收到的投资消息很可能是一种常见的投资诈骗，这类消息通常承诺高回报，但实际上是为了诱导您投入资金。\n\n2. **风险点分析**：\n   - 高回报承诺：任何声称可以轻松赚很多钱的投资机会都值得怀疑\n   - 缺乏详细信息：没有提供具体的投资策略、风险提示等关键信息\n   - 紧迫感：可能会催促您立即行动，不给您足够的思考时间\n\n3. **防范建议**：\n   - 不要轻信陌生人的投资建议\n   - 对投资机会进行充分的尽职调查\n   - 咨询专业的金融顾问\n   - 只通过正规的金融机构进行投资\n   - 保护好个人财务信息，不要轻易透露银行账号、密码等敏感信息\n\n记住，投资有风险，入市需谨慎。如果一个投资机会听起来好得难以置信，那它很可能是一个陷阱。`;
+      return `我已分析您的问题，以下是我的建议：\n\n1. **风险识别**：您提到的情况很可能是一种常见的${riskType}，这类诈骗通常通过诱导您投入资金或提供个人信息来获取利益。\n\n2. **风险点分析**：\n   ${specificRisks.map(risk => `- ${risk}`).join('\n   ')}\n\n3. **防范建议**：\n   - 不要轻信陌生人的承诺，尤其是涉及金钱的交易\n   - 对任何投资或赚钱机会进行充分的尽职调查\n   - 咨询专业人士的意见，不要独自做决定\n   - 只通过正规的渠道和机构进行金融交易\n   - 保护好个人财务信息，不要轻易透露银行账号、密码等敏感信息\n   - 如果遇到可疑情况，及时报警或向相关部门咨询\n\n记住，天上不会掉馅饼。如果一个机会听起来好得难以置信，那它很可能是一个陷阱。`;
     }
   }
 }
