@@ -97,10 +97,16 @@ function App() {
 
       if (response.ok) {
         const data = await response.json()
-        if (data.message && !data.message.includes('暂时无法处理您的请求')) {
-          setTestResult(prev => ({ ...prev, [modelName]: '测试成功' }))
-        } else {
+        // 检查返回的消息是否包含模拟响应的特征
+        if (data.message && 
+            (data.message.includes('我已分析您的问题') || 
+             data.message.includes('风险识别') || 
+             data.message.includes('风险点分析') || 
+             data.message.includes('防范建议'))) {
+          // 这些是模拟响应的特征
           setTestResult(prev => ({ ...prev, [modelName]: '测试失败：API密钥无效' }))
+        } else {
+          setTestResult(prev => ({ ...prev, [modelName]: '测试成功' }))
         }
       } else {
         setTestResult(prev => ({ ...prev, [modelName]: '测试失败：服务器连接失败' }))
